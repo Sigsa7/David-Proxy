@@ -1,10 +1,9 @@
 require('newrelic');
 const path = require('path');
 const express = require('express');
-//const redis = require('redis');
-//const REDIS_PORT = process.env.REDIS_PORT;
-//const client = redis.createClient(REDIS_PORT);
-
+const redis = require('redis');
+const REDIS_PORT = process.env.REDIS_PORT;
+const client = redis.createClient(REDIS_PORT);
 const request =require('request');
 const app = express();
 app.use(express.static(path.join(__dirname, '/../public/')));
@@ -16,30 +15,32 @@ const apiProxy = httpProxy.createProxyServer();
 const gallery = 'http://13.57.41.164:3001',
     reservations = 'http://54.200.32.135',
     menus = 'http://18.219.221.244',
-    reviews = 'http://18.223.115.5';
+    reviews = 'http://18.223.115.5',
+    kat = 'http://18.223.132.108:3005/booking/1/'
 
-    const kat = 'http://18.223.132.108:3005/booking/1/'
-
-    // function cache(req, res, next) {
-    //   const param = req.params.restaurant_id;
-    //   client.get(param, function (err, data) {
-    //       if (err) throw err;
-    //       if (data != null) {
-    //       let daga =JSON.parse(data)
-    //           res.send(daga);
-    //       } else {
-    //           next();
-    //       }
-    //   });
-    // }
+    function cache(req, res, next) {
+      const param = req.params.restaurant_id;
+      console.log('peeeee')
+      client.get(param, function (err, data) {
+        console.log('beeeee')
+          if (err) throw err;
+          if (data != null) {
+          let daga =JSON.parse(data)
+              res.send(daga);
+          } else {
+              next();
+          }
+      });
+    }
 console.log('im on')
-app.get("/:restaurant_id/images", function(req, res) {
+app.get("/:restaurant_id/images", cache , function(req, res) {
   console.log('serever')
   request(`${gallery}/${req.params.restaurant_id}/images`, (error, response, body) => {
     if (error){
       console.log(error)
     }else{
-      //client.set(req.params.restaurant_id, JSON.stringify(body));
+      console.log('eeee')
+      client.set(req.params.restaurant_id, JSON.stringify(body));
       res.status(200).send(body);
       
     }
@@ -47,7 +48,7 @@ app.get("/:restaurant_id/images", function(req, res) {
   
 });
     // console.log('redirecting to photo gallery server');
-    // apiProxy.web(req, res, {target: gall}, (err,result) => {
+    // apiProxy.web(req, res, {target: gall}, `(err,result) => {
     //   console.log('dd')
     // });
     
