@@ -13,7 +13,7 @@ app.use('/:restaurant_id', express.static(path.join(__dirname, '/../public/')));
 const httpProxy = require('http-proxy');
 const apiProxy = httpProxy.createProxyServer();
 
-const gallery = 'http:/13.57.41.164:3001',
+const gallery = 'http://13.57.41.164:3001',
     reservations = 'http://54.200.32.135',
     menus = 'http://18.219.221.244',
     reviews = 'http://18.223.115.5';
@@ -40,7 +40,7 @@ app.get("/:restaurant_id/images", function(req, res) {
       console.log(error)
     }else{
       //client.set(req.params.restaurant_id, JSON.stringify(body));
-      res.status(200).send(result.rows);
+      res.status(200).send(body);
       
     }
 
