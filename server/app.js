@@ -32,8 +32,9 @@ const gallery = 'http:/13.57.41.164:3001',
     //       }
     //   });
     // }
-
+console.log('im on')
 app.get("/:restaurant_id/images", function(req, res) {
+  console.log('serever')
   request(`${gallery}/${req.params.restaurant_id}/images`, (error, response, body) => {
     if (error){
       console.log(error)
