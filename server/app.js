@@ -80,7 +80,7 @@ app.post("/:restaurant_id/images", function(req, res) {
 
 
 
-app.pos
+
 
 
 
