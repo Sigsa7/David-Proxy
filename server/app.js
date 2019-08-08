@@ -6,7 +6,9 @@ const REDIS_PORT = process.env.REDIS_PORT;
 const client = redis.createClient(REDIS_PORT);
 const request = require('request');
 const app = express();
-
+app.get('/loaderio-fe0f477145e77cf99aa574fea2e8ce67/',(req,res)=>{
+  res.send('loaderio-fe0f477145e77cf99aa574fea2e8ce67')
+})
 app.use(express.static(path.join(__dirname, '/../public/')));
 app.use('/:restaurant_id', express.static(path.join(__dirname, '/../public/')));
 
@@ -14,6 +16,8 @@ const httpProxy = require('http-proxy');
 const apiProxy = httpProxy.createProxyServer();
 
 const gallery = 'http://13.52.61.135',
+
+
     reservations = 'http://54.200.32.135',
     menus = 'http://18.219.221.244',
     reviews = 'http://18.223.115.5',
@@ -42,21 +46,16 @@ app.get("/:restaurant_id/images", cache , function(req, res) {
     }else{
       console.log('eeee')
       client.set(req.params.restaurant_id, JSON.stringify(body));
-      res.status(200).send(body);
-      
+      res.status(200).send(body); 
     }
-
-  
 });
     // console.log('redirecting to photo gallery server');
     // apiProxy.web(req, res, {target: gall}, `(err,result) => {
     //   console.log('dd')
     // });
-    
 });
 // add data 
-app.post("/:restaurant_id/images", function(req, res) {
-  
+app.post("/:restaurant_id/images", function(req, res) {  
   request.post(`${gallery}/${req.params.restaurant_id}/images`, req.body, (error, res) => {
     if (error){
       console.log(error)
@@ -64,29 +63,13 @@ app.post("/:restaurant_id/images", function(req, res) {
       console.log('eeee')
       client.set(req.params.restaurant_id, JSON.stringify(body));
       res.status(200).send();
-      
     }
-
-  
 });
     // console.log('redirecting to photo gallery server');
     // apiProxy.web(req, res, {target: gall}, `(err,result) => {
     //   console.log('dd')
-    // });
-    
+    // }); 
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.all("/:restaurant_id/reservations", function(req, res) {
   //console.log('redirecting to reservations');
