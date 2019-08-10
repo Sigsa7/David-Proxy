@@ -28,7 +28,7 @@ app.get("/:restaurant_id/images", function(req, res) {
       console.log(error)
     }else{
       
-      client.set(req.params.restaurant_id, JSON.stringify(body));
+      
       res.status(200).send(body); 
     }
   });
@@ -40,7 +40,7 @@ app.post("/:restaurant_id/images", function(req, res) {
       console.log(error)
     }else{
     
-      client.set(req.params.restaurant_id, JSON.stringify(body));
+     
       res.status(200).send();
     }
  });
