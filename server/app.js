@@ -17,7 +17,6 @@ const apiProxy = httpProxy.createProxyServer();
 
 const gallery = 'http://13.52.61.135',
 
-
     reservations = 'http://54.200.32.135',
     menus = 'http://18.219.221.244',
     reviews = 'http://18.223.115.5',
