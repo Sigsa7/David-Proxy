@@ -25,9 +25,9 @@ const gallery = 'http://13.52.61.135',
 
     function cache(req, res, next) {
       const param = req.params.restaurant_id;
-      console.log('peeeee')
+      
       client.get(param, function (err, data) {
-        console.log('beeeee')
+        
           if (err) throw err;
           if (data != null) {
           let daga =JSON.parse(data)
@@ -49,10 +49,6 @@ app.get("/:restaurant_id/images", cache , function(req, res) {
       res.status(200).send(body); 
     }
 });
-    // console.log('redirecting to photo gallery server');
-    // apiProxy.web(req, res, {target: gall}, `(err,result) => {
-    //   console.log('dd')
-    // });
 });
 // add data 
 app.post("/:restaurant_id/images", function(req, res) {  
