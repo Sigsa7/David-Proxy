@@ -39,16 +39,17 @@ const gallery = 'http://13.52.61.135',
     }
 console.log('im on')
 app.get("/:restaurant_id/images", cache , function(req, res) {
-  console.log('serever')
+  
   request(`${gallery}/${req.params.restaurant_id}/images`, (error, response, body) => {
     if (error){
       console.log(error)
     }else{
-      console.log('eeee')
+      
       client.set(req.params.restaurant_id, JSON.stringify(body));
       res.status(200).send(body); 
     }
 });
+
 });
 // add data 
 app.post("/:restaurant_id/images", function(req, res) {  
@@ -56,15 +57,11 @@ app.post("/:restaurant_id/images", function(req, res) {
     if (error){
       console.log(error)
     }else{
-      console.log('eeee')
+    
       client.set(req.params.restaurant_id, JSON.stringify(body));
       res.status(200).send();
     }
-});
-    // console.log('redirecting to photo gallery server');
-    // apiProxy.web(req, res, {target: gall}, `(err,result) => {
-    //   console.log('dd')
-    // }); 
+ });
 });
 
 app.all("/:restaurant_id/reservations", function(req, res) {
