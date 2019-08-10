@@ -1,6 +1,9 @@
 require('newrelic');
 const path = require('path');
 const express = require('express');
+const redis = require('redis');
+const REDIS_PORT = process.env.REDIS_PORT;
+const client = redis.createClient(REDIS_PORT);
 const request = require('request');
 const app = express();
 app.get('/loaderio-fe0f477145e77cf99aa574fea2e8ce67/',(req,res)=>{
@@ -14,20 +17,35 @@ const apiProxy = httpProxy.createProxyServer();
 
 const gallery = 'http://13.52.61.135',
 
+
     reservations = 'http://54.200.32.135',
     menus = 'http://18.219.221.244',
     reviews = 'http://18.223.115.5',
     kat = 'http://18.223.132.108:3005/booking/1/'
 
+    function cache(req, res, next) {
+      const param = req.params.restaurant_id;
+      
+      client.get(param, function (err, data) {
+        
+          if (err) throw err;
+          if (data != null) {
+          let daga =JSON.parse(data)
+              res.send(daga);
+          } else {
+              next();
+          }
+      });
+    }
 console.log('im on')
-app.get("/:restaurant_id/images", function(req, res) {
+app.get("/:restaurant_id/images", cache , function(req, res) {
   
   request(`${gallery}/${req.params.restaurant_id}/images`, (error, response, body) => {
     if (error){
       console.log(error)
     }else{
       
-      
+      client.set(req.params.restaurant_id, JSON.stringify(body));
       res.status(200).send(body); 
     }
   });
@@ -39,7 +57,7 @@ app.post("/:restaurant_id/images", function(req, res) {
       console.log(error)
     }else{
     
-     
+      client.set(req.params.restaurant_id, JSON.stringify(body));
       res.status(200).send();
     }
  });
