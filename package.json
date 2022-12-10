@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/reservly/dorris-demo#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "http-proxy": "^1.17.0",
     "new": "^0.1.1",
     "newrelic": "^5.11.0",
